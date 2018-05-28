@@ -22,7 +22,7 @@ def histogram_find_plot_analyze():
     :return:
     """
     # opencv
-    img = cv2.imread('dog.png')
+    img = cv2.imread('image/dog.png')
     hist = cv2.calcHist([img], [0], None, [256], [0, 256])
     # numpy
     hist_np, bins = np.histogram(img.ravel(), 256, [0, 256])
@@ -39,7 +39,7 @@ def histogram_mask():
         图片某一部分
     :return:
     """
-    img = cv2.imread('dog.png', 0)
+    img = cv2.imread('image/dog.png', 0)
     # 建立一个mask
     mask = np.zeros(img.shape[:2], np.uint8)
     mask[100:300, 100:400] = 255
@@ -62,7 +62,7 @@ def histogram_equalization():
      高亮度图片会聚集在一起，将像素进行拉伸。常用来提高图片的对比度。
     :return:
     """
-    img = cv2.imread('wiki.jpg', 0)
+    img = cv2.imread('image/wiki.jpg', 0)
     hist, bins = np.histogram(img.flatten(), 256, [0, 256])
 
     cdf = hist.cumsum()
@@ -81,7 +81,7 @@ def after_equalization():
 
     :return:
     """
-    img = cv2.imread('wiki.jpg', 0)
+    img = cv2.imread('image/wiki.jpg', 0)
     hist, bins = np.histogram(img.flatten(), 256, [0, 256])
 
     cdf = hist.cumsum()
@@ -99,11 +99,11 @@ def after_equalization():
 
 
 def equalization_opencv():
-    img = cv2.imread('wiki.jpg', 0)
+    img = cv2.imread('image/wiki.jpg', 0)
     equ = cv2.equalizeHist(img)
     res = np.hstack((img, equ))
-    cv2.imwrite('res.png', res)
-    img_ = cv2.imread('res.png', 0)
+    cv2.imwrite('image/res.png', res)
+    img_ = cv2.imread('image/res.png', 0)
     cv2.imshow('hello', img_)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
@@ -114,10 +114,10 @@ def contrast_limited_adaptive_histogram_equalization():
        局部均衡化
     :return:
     """
-    img = cv2.imread('wiki.jpg', 0)
+    img = cv2.imread('image/wiki.jpg', 0)
     clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
     cll = clahe.apply(img)
-    cv2.imwrite('test.png', cll)
+    cv2.imwrite('image/test.png', cll)
 
 
 def histograms_2D():
@@ -129,14 +129,14 @@ def histograms_2D():
         3. range=[0,180,0,256]
     :return:
     """
-    img = cv2.imread('test.jpg')
+    img = cv2.imread('image/test.jpg')
     # 1.找到直方图
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     hist = cv2.calcHist([hsv], [0, 1], None, [180, 256], [0, 180, 0, 256])
     # numpy
     h = hsv[:, :, 0]
     s = hsv[:, :, 1]
-    img_np = cv2.imread('test.jpg')
+    img_np = cv2.imread('image/test.jpg')
     hsv_np = cv2.cvtColor(img_np, cv2.COLOR_BGR2HSV)
     hist_np, xbins_np, ybinx_np = np.histogram2d(h.ravel(), s.ravel(), [180, 256], [[0, 180], [0, 256]])
     # 2.画直方图
@@ -145,18 +145,72 @@ def histograms_2D():
     plt.imshow(hist, interpolation='nearest')
     plt.show()
 
+
 def histogram_back_projection():
     """
         背后投影
             用于图片一部分或者找图片感兴趣的部分
-        
     :return:
     """
+    # algorithm in numpy
+    # 1.要找的'M'和要搜索'I'
+    # roi is the object or region of object we need to find
+    roi = cv2.imread('rose_red.png')
+    hsv = cv2.cvtColor(roi, cv2.COLOR_BGR2HSV)
+
+    # target is the image we search in
+    target = cv2.imread('rose.png')
+    hsvt = cv2.cvtColor(target, cv2.COLOR_BGR2HSV)
+
+    # find the histograms using calcHist.Can be done with np.hsitogram2d also
+    M = cv2.calcHist([hsv], [0, 1], None, [180, 256], [0, 180, 0, 256])
+    I = cv2.calcHist([hsvt], [0, 1], None, [180, 256], [0, 180, 0, 256])
+
+    # 2.R=M/I.
+    R = M / I
+    h, s, v = cv2.split(hsvt)
+    B = R[h.ravel(), s.ravel()]
+    B = np.minimum(B, 1)
+    B = B.reshape(hsvt.shape[:2])
+
+    # B=D*B
+    disc = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
+    cv2.filter2D(B, -1, disc, B)
+    B = np.uint8(B)
+    cv2.normalize(B, B, 0, 255, cv2.NORM_MINMAX)
+
+    ret, thresh = cv2.threshold(B, 50, 255, 0)
 
 
-# histogram_find_plot_analyze()
+def backprojection_in_opencv():
+    roi = cv2.imread('rose_red.png')
+    hsv = cv2.cvtColor(roi, cv2.COLOR_BGR2HSV)
+    target = cv2.imread('rose.png')
+    hsvt = cv2.cvtColor(target, cv2.COLOR_BGR2HSV)
+
+    # calculating object histogram
+    roihist = cv2.calcHist([hsv], [0, 1], None, [180, 256], [0, 180, 0, 256])
+
+    # normalize histogram and apply backprojection
+    cv2.normalize(roihist, roihist, 0, 255, cv2.NORM_MINMAX)
+    dst = cv2.calcBackProject([hsvt], [0, 1], roihist, [0, 180, 0, 256])
+
+    # now convolute with circular disc
+    disc = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
+    cv2.filter2D(dst, -1, disc, dst)
+
+    # threshold and binary AND
+    ret, thresh = cv2.threshold(dst, 50, 255, 0)
+    thresh = cv2.merge(thresh, thresh, thresh)
+    res = cv2.bitwise_and(target, thresh)
+
+    res = np.vstack((target, thresh, res))
+    cv2.imwrite('res.jpg', res)
+
+
+histogram_find_plot_analyze()
 # histogram_mask()
 # histogram_equalization()
 # after_equalization()
 # equalization_opencv()
-histograms_2D()
+# histograms_2D()
