@@ -23,7 +23,7 @@ def pyramid():
 
     :return:
     """
-    img = cv2.imread('test.jpg')
+    img = cv2.imread('image/test.jpg')
     lower_reso = cv2.pyrDown(img)
     higher_reso = cv2.pyrUp(img)
 
@@ -39,8 +39,8 @@ def image_blend_pyramid():
     """
     :return:
     """
-    A = cv2.imread('apple.jpg')
-    B = cv2.imread('orange.jpg')
+    A = cv2.imread('image/dog.png')
+    B = cv2.imread('image/meisi.jpg')
 
     # 1.A产生高斯金字塔图
     G = A.copy()
@@ -72,7 +72,7 @@ def image_blend_pyramid():
     LS = []
     for la, lb in zip(lpA, lpB):
         rows, cols, dpt = la.shape
-        ls = np.hstack((la[:, 0:cols / s], lb[:, cols / 2:]))
+        ls = np.hstack((la[:, 0:cols / 2], lb[:, cols / 2:]))
         LS.append(ls)
 
     # 4.现在重新构建
@@ -83,8 +83,11 @@ def image_blend_pyramid():
 
     # 5.将图片各一半连接起来
     real = np.hstack((A[:, :cols / 2], B[:, cols / 2:]))
-    cv2.imwrite('prymids_blend.jpg', ls_)
-    cv2.imwrite('direct_blend.jpg', real)
+    cv2.imshow('ls_', ls_)
+    cv2.imshow('real', real)
+    # cv2.imwrite('image/prymids_blend.jpg', ls_)
+    # cv2.imwrite('image/direct_blend.jpg', real)
 
 
-pyramid()
+# pyramid()
+image_blend_pyramid()
