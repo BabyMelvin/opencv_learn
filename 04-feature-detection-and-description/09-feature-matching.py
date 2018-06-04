@@ -131,7 +131,7 @@ def FLANN_based_matcher():
     index_params = dict(algorithm=FLANN_INDEX_KDIREE, trees=5)
     search_params = dict(checks=50)  # or pass empty dictionary
 
-    flann = cv2.FlannBasedMatcher(des1, des2, k=2)
+    flann = cv2.FlannBasedMatcher(index_params, search_params)
     matches = flann.knnMatch(des1, des2, k=2)
 
     # need to draw only good matches ,so create a mask
@@ -149,5 +149,6 @@ def FLANN_based_matcher():
 
     img3 = cv2.drawMatchesKnn(img1, kp1, img2, kp2, matches, None, **draw_params)
     plt.imshow(img3), plt.show()
+
 
 FLANN_based_matcher()
