@@ -39,3 +39,8 @@
 检查逆矩阵与Harris角检测的相似性。表明角点用来更好的追踪。
 
 这个观点来看，我们采用一些点来观察，我们收到这些点光学流动。但是又有一些问题。直到现在我们处理小的运动。当大的运动将会失效。然后我们又要使用金字塔图。当我们在塔图中，小的运动被移除掉，大的运动变成小的运动。从这用Lucas-Kanade，能获得带有不同缩放的光学流动。
+
+## Gunner Farnerback
+
+Lucas-Kanade 方法计算光流通过稀少的特征集。OpenCV提供另一些算法找密集的光流。计算帧上所有点的光流。基于GunnerFarneback算法。在2003年<<Two-Frame Motion Estimate Based on Polynomial Expansion>> Gunner Farneback
+
