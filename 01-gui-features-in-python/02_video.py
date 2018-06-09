@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 from time import sleep
+import time
 
 """
     目标:
@@ -9,6 +10,41 @@ from time import sleep
         2.学会用照相机抓图，并显示
         3.cv2.VideoCapture(),cv2.VideoWriter()
 """
+
+
+def time_module():
+    """
+    time 和 calendar 模块
+    时间戳来自1970.1.1午夜,只支持到2038年???
+    一周几日：0-6
+    一年：    1-366（儒略历）
+    struct_time 元组有这些属性:
+        tm_year
+        tm_mon
+        tm_mday
+        tm_hour
+        tm_min
+        tm_sec
+        tm_wday: 0-6
+        tm_yday: 1-366
+        tm_isdst
+    :return:
+    """
+    ticks = time.time()
+    print("当前的时间戳为:", ticks)
+    localtime = time.localtime(time.time())
+    print("本地时间", localtime)  # 返回struct_time
+    localtime_f1 = time.asctime(time.localtime(time.time()))
+    print("本地时间为", localtime_f1)  # Fri Jun  8 21:48:50 2018
+
+    # 格式化时间
+    localtime_f2 = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+    print(localtime_f2)
+
+    time.clock()  # 返回CPU秒数
+
+
+# time_module()
 
 
 def capture_video_from_camera():
@@ -22,7 +58,12 @@ def capture_video_from_camera():
     cap = cv2.VideoCapture(0)
     # cap.get(prop)
     # cap.set(pro,value)
+    count = 1
+
+    print("当前时间：", time.asctime(time.localtime(time.time())))
     while True:
+        # 前一帧时间
+        pre_clock = time.clock()
         # 逐帧捕捉
         if cap.isOpened():
             ret, frame = cap.read()
@@ -31,6 +72,8 @@ def capture_video_from_camera():
             print("摄像头未能打开")
             continue
         # 对帧操作
+        next_clock = time.clock()
+        print("get frame after ", next_clock - pre_clock)
         if ret:
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         else:
@@ -46,6 +89,9 @@ def capture_video_from_camera():
     cv2.destroyAllWindows()
 
 
+# capture_video_from_camera()
+
+
 def playing_video_from_file():
     """
     传入VideoCapture(文件名)
@@ -53,22 +99,28 @@ def playing_video_from_file():
     :return:
     """
     count = 0
-    cap = cv2.VideoCapture('test.avi')
+    cap = cv2.VideoCapture('image/test.avi')
     while cap.isOpened():
         count += 1
         ret, frame = cap.read()
         if ret:
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             cv2.imshow('frame', gray)
-            # ord Return the Unicode code point for a one-character string.
             print("playing.....")
+            time.sleep(0.1)
             # cv2.waitKey(0)
-            if (cv2.waitKey(0) & 0xFF) == ord('q'):
+
+            # 将会阻塞?
+            if cv2.waitKey(0) & 0xFF == ord('q'):
                 break
         else:
             break
+
     cap.release()
     cv2.destroyAllWindows()
+
+
+# playing_video_from_file()
 
 
 def saving_video():
@@ -90,7 +142,7 @@ def saving_video():
     cap = cv2.VideoCapture(0)
     # 定义codec和创建VideoWriter 对象
     fourcc = cv2.VideoWriter_fourcc(*'XVID')
-    out = cv2.VideoWriter('output.avi', fourcc, 20.0, (640, 480))
+    out = cv2.VideoWriter('image/output.avi', fourcc, 20.0, (640, 480))
     while cap.isOpened():
         ret, frame = cap.read()
         if ret:
@@ -108,7 +160,4 @@ def saving_video():
     out.release()
     cv2.destroyAllWindows()
 
-
-# capture_video_from_camera()
-# playing_video_from_file()
 saving_video()

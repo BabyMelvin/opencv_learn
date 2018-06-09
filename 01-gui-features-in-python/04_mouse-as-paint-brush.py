@@ -32,6 +32,9 @@ def simple_demo():
     cv2.destroyAllWindows()
 
 
+# simple_demo()
+
+
 def more_advanced_mouse():
     """
     帮助理解对象跟踪，图像分割
@@ -72,6 +75,4 @@ def more_advanced_mouse():
             break
     cv2.destroyAllWindows()
 
-
-more_advanced_mouse()
-# simple_demo()
+# more_advanced_mouse()

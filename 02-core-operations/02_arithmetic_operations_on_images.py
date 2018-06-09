@@ -25,6 +25,9 @@ def image_addition():
     print(x + y)  # 250+10=260%256=4
 
 
+# image_addition()
+
+
 def image_blending():
     """
     也是图片操作，但是图片不同的比重(weight)为了感觉混合或者透明。
@@ -34,25 +37,32 @@ def image_blending():
         dst=α*img1+β*img2+γ
     :return:
     """
-    img1 = cv2.imread("test1.jpg")
-    img2 = cv2.imread("test2.jpg")
+    img1 = cv2.imread("image/test1.jpg")
+    print(img1[:2, :3, :3])
+    img2 = cv2.imread("image/test2.jpg")
+    print(img2[:2, :3, :3])
     cv2.imshow('test1', img1)
     cv2.imshow('test2', img2)
-    dst = cv2.addWeighted(img1, 0.2, img2, 0.8, 0)
+    # 小数，四舍五入  末尾
+    dst = cv2.addWeighted(img1, 0.5, img2, 0.5, 2)
+    print(dst[:2, :3, :3])
     cv2.imshow('dts', dst)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
 
+# image_blending()
+
+
 def bitwise_operations():
     """
      按位操作：AND,OR,NOT 和XOR
-        获取图片任何部分，细化和处理不是矩形ROI(range of image)
+        获取图片任何部分，细化和处理  图片矩形区域ROI(rang of image)
     :return:
     """
     # load two images
-    img1 = cv2.imread('test.jpg')
-    img2 = cv2.imread('opencv.png')
+    img1 = cv2.imread('image/test.jpg')
+    img2 = cv2.imread('image/opencv.png')
 
     # i want to put logo on top-left corner,so i create a ROI
     rows, cols, channels = img2.shape
@@ -61,7 +71,12 @@ def bitwise_operations():
 
     # now create a mask of logo and create its inverse mask also
     img2gray = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
+
+    # 阀值: 10为值阀，<10 转化为0  , >10 255
+    # 255 为maxval 指定大于阀的值
     ret, mask = cv2.threshold(img2gray, 10, 255, cv2.THRESH_BINARY)
+
+    # bitwise_not 255减去原来像素：如原来20,去反为235
     mask_inv = cv2.bitwise_not(mask)
 
     # mask 相当于去除改部分，mask_inv 保留mask以外的部分
@@ -79,6 +94,6 @@ def bitwise_operations():
     cv2.destroyAllWindows()
 
 
-# image_addition()
-# image_blending()
-bitwise_operations()
+# bitwise_operations()
+
+

@@ -15,6 +15,10 @@ import matplotlib.pyplot as plt
 """
 
 
+def button_listen():
+    print("button click")
+
+
 def code_demo():
     """
         一个开关只有，否则屏幕始终是black
@@ -35,6 +39,7 @@ def code_demo():
     # 创建开关
     switch = "0:OFF \n 1 : ON"
     cv2.createTrackbar(switch, 'image', 0, 1, nothing)
+    cv2.createButton('开关', button_listen)
     while True:
         cv2.imshow('image', img)
         k = cv2.waitKey(1) & 0xFF

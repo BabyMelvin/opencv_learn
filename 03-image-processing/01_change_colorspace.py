@@ -23,15 +23,18 @@ def change_color_space():
     print(flags)
 
 
+# change_color_space()
+
+
 def object_track():
     """
-        提取颜色的物体，HSV更容易比RGB，提取蓝色物体：
-            获取视频的没帧
-            将BGR转成HSV颜色空间
-            设定HSV图片蓝色空间阀值范围
-            能够单独提取看色物体，做我们想做的任何事
+        提取颜色的物体，HSV比RGB更容易提取蓝色物体：
+            1.获取视频的没帧
+            2.将BGR转成HSV颜色空间
+            3.设定HSV图片蓝色空间阀值范围
+            4.能够单独提取看色物体，做我们想做的任何事
         结果：
-            获取的图像会有噪音
+            1.获取的图像会有噪音
     :return:
     """
     cap = cv2.VideoCapture(0)
@@ -60,6 +63,9 @@ def object_track():
     cv2.destroyAllWindows()
 
 
+# object_track()
+
+
 def find_HSV_value():
     """
         [H-10,100,100]和[H+10,255,255]作为范围
@@ -70,6 +76,4 @@ def find_HSV_value():
     print(hsv_green)
 
 
-change_color_space()
-object_track()
-find_HSV_value()
+# find_HSV_value()

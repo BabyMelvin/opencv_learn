@@ -21,12 +21,22 @@ def simple_threshold():
             cv2.THRESH_TOZERO_INV
     :return:
     """
-    img = cv2.imread('test.jpg', 0)
+    img = cv2.imread('image/test.jpg')
+    ori = img[:3, :3, :]
+    # 大于127 为255.小于127为0  二值就是分界意思
     ret, thresh1 = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY)
     ret, thresh2 = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY_INV)
-    ret, thresh3 = cv2.threshold(img, 127, 255, cv2.THRESH_TRUNC)
-    ret, thresh4 = cv2.threshold(img, 127, 255, cv2.THRESH_TOZERO)
+
+    # 大于37截取成37.小于37不变 。截取挤压
+    ret, thresh3 = cv2.threshold(img, 37, 255, cv2.THRESH_TRUNC)
+
+    # 阀为0或不是0,和截取区别在于阀值范围为0或者是指定值
+    ret, thresh4 = cv2.threshold(img, 48, 255, cv2.THRESH_TOZERO)
+
     ret, thresh5 = cv2.threshold(img, 127, 255, cv2.THRESH_TOZERO_INV)
+    print("ori", ori)
+    print("th3=trunc", thresh3[:3, :3, :])
+    print("th4=tozero", thresh4[:3, :3, :])
 
     titles = ['origin', 'binary', 'binary_inv', 'trunc', 'tozero', 'tozero_inv']
     images = [img, thresh1, thresh2, thresh3, thresh4, thresh5]
@@ -37,19 +47,23 @@ def simple_threshold():
     plt.show()
 
 
+# simple_threshold()
+
+
 def adaptive_threshold():
     """
         简单阀值，用全局控制阀值。
         算术计算小的区域的阀值，变化会有更好的效果。
         三个输入，一个输出
         阀值计算方法：
-            cv2.ADAPTIVE_THRESH_MEAN_C:相领区域平局值
+            cv2.ADAPTIVE_THRESH_MEAN_C:相邻区域平局值
             cv2.ADAPTIVE_THRESH_GAUSSIAN_C:高斯窗口的权重值
         block_size:决定相邻区域面积大小
         c:一个常数，平均或者权重相减计算
     :return:
     """
     img = cv2.imread('test.jpg', 0)
+
     img = cv2.medianBlur(img, 5)
     ret, th1 = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY)
     th2 = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 11, 2)
@@ -96,8 +110,3 @@ def Otsu_binarization():
         plt.subplot(3, 3, i * 3 + 3), plt.imshow(images[i * 3 + 2], 'gray')
         plt.title(titles[i * 3 + 2]), plt.xticks([]), plt.yticks([])
     plt.show()
-
-
-# simple_threshold()
-# adaptive_threshold()
-Otsu_binarization()

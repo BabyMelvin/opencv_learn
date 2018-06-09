@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
         4.分割和合并图像
 """
 # 1.获取修改像素值
-img = cv2.imread('test.jpg')
+img = cv2.imread('image/test.jpg')
 px = img[100, 100]
 print(px)
 
