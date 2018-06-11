@@ -21,7 +21,7 @@ def scaling():
         2.
     :return:
     """
-    img = cv2.imread('test.jpg')
+    img = cv2.imread('image/test.jpg')
     # res = cv2.resize(img, None, fx=2, fy=2, interpolation=cv2.INTER_CUBIC)
     # 或者
     height, width = img.shape[:2]
@@ -33,6 +33,9 @@ def scaling():
     cv2.destroyAllWindows()
 
 
+# scaling()
+
+
 def translation():
     """
         改变物体位置。
@@ -41,7 +44,7 @@ def translation():
 
     :return:
     """
-    img = cv2.imread('test.jpg', 0)
+    img = cv2.imread('image/test.jpg', 0)
     rows, cols = img.shape
     M = np.float32([[1, 0, 100], [0, 1, 50]])
     dst = cv2.warpAffine(img, M, (cols, rows))
@@ -49,6 +52,9 @@ def translation():
     cv2.imshow('image', dst)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
+
+
+# translation()
 
 
 def rotation():
@@ -61,8 +67,9 @@ def rotation():
             β=scale.sinO
     :return:
     """
-    img = cv2.imread('test.jpg', 0)
+    img = cv2.imread('image/test.jpg', 0)
     rows, cols = img.shape
+    # 中心，角度，放大缩小
     M = cv2.getRotationMatrix2D((cols / 2, rows / 2), 90, 1)
     dst = cv2.warpAffine(img, M, (cols, rows))
 
@@ -71,13 +78,14 @@ def rotation():
     cv2.destroyAllWindows()
 
 
+# 　rotation()
 def affine_transformation():
     """
        仿射变换：所有平行线输出还是平行线。
        找到旋转矩阵，输入图像的三个点，和对应输出的三个点。
     :return:
     """
-    img = cv2.imread('test.jpg')
+    img = cv2.imread('image/test.jpg')
     rows, cols, ch = img.shape
     pts1 = np.float32([[50, 50], [200, 50], [50, 200]])
     pts2 = np.float32([[10, 100], [200, 50], [100, 250]])
@@ -89,6 +97,9 @@ def affine_transformation():
     plt.show()
 
 
+# affine_transformation()
+
+
 def perspective_transformation():
     """
         透视图，需要3x3矩阵，直线仍然是直线。
@@ -96,7 +107,7 @@ def perspective_transformation():
             4点中3点不能共线
     :return:
     """
-    img = cv2.imread('test.jpg')
+    img = cv2.imread('image/test.jpg')
     rows, cols, ch = img.shape
     pts1 = np.float32([[56, 56], [246, 145], [27, 48], [200, 300]])
     pts2 = np.float32([[0, 0], [200, 0], [0, 300], [300, 300]])
@@ -107,9 +118,4 @@ def perspective_transformation():
     plt.subplot(122), plt.imshow(dst), plt.title('output')
     plt.show()
 
-
-# scaling()
-# translation()
-# rotation()
-# affine_transformation()
-perspective_transformation()
+# perspective_transformation()

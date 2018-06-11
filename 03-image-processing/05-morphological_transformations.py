@@ -18,7 +18,7 @@ def my_erosion():
     内核函数滑动时候，所有唯一则是1，否则为0.iterations 迭代
     :return:
     """
-    img = cv2.imread('j.png')
+    img = cv2.imread('image/j.png')
     kernel = np.ones((5, 5), np.uint8)
     # 1. erosion
     erosion = cv2.erode(img, kernel, iterations=1)
@@ -54,6 +54,9 @@ def my_erosion():
     plt.show()
 
 
+# my_erosion()
+
+
 def structuring_element():
     """
     我们手动创建结构元素在numpy帮助下,是正方形外形。但是，某些情形，需要圆形或者椭圆
@@ -66,5 +69,4 @@ def structuring_element():
     print(cv2.getStructuringElement(cv2.MORPH_CROSS, (5, 5)))
 
 
-# my_erosion()
-structuring_element()
+# structuring_element()

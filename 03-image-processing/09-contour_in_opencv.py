@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 """
 
 
-def contours():
+def contours_learn():
     """
     in:
         1.image
@@ -55,13 +55,15 @@ def contours():
     plt.show()
 
 
+# contours_learn()
+
 def contour_feature():
     """
-        轮廓不同特点：
+        轮廓不同特性：
             面积，周长(perimeter)，图心(centroid),边界框
     :return:
     """
-    img = cv2.imread('test.jpg', 0)
+    img = cv2.imread('image/test.jpg', 0)
     ret, thresh = cv2.threshold(img, 127, 255, 0)
     image, contour, hierarchy = cv2.findContours(thresh, 1, 2)
     cnt = contour[0]
@@ -104,6 +106,9 @@ def contour_feature():
     lefty = int(-x * vy / vx + y)
     righty = int(((cols - x) * vy / vx) + y)
     img = cv2.line(img, (cols - 1, righty), (0, lefty), (0, 255, 0), 2)
+
+
+# contour_feature()
 
 
 def contour_properties():
@@ -159,10 +164,13 @@ def contour_properties():
     bottommos = tuple(cnt[cnt[:, :, 1].argmax()][0])
 
 
+# contour_properties()
+
+
 def more_functions():
     """
          1.凸性缺陷(convexity defect)和如何找到他们
-         2.一点到宁一点的最短距离(多边形)
+         2.一点到另一点的最短距离(多边形)
          3.匹配不同的形状
 
          1.凸性缺陷：任何和包络线有偏差的缺陷都是凸性缺陷
@@ -199,6 +207,8 @@ def more_functions():
     cv2.destroyAllWindows()
 
 
+# more_functions()
+
 def match_shapes():
     """
        两个图形的匹配度，越小，匹配度越高。
@@ -217,9 +227,5 @@ def match_shapes():
     ret = cv2.matchShapes(cnt1, cnt2, 1, 0.0)
     print(ret)
 
-
-# contours()
-# contour_feature()
-# contour_properties()
-# more_functions()
-match_shapes()
+# 匹配度
+# match_shapes()

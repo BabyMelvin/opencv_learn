@@ -18,7 +18,7 @@ def _2D_convolution():
             找图片边缘
     :return:
     """
-    img = cv2.imread("noisy.jpg")
+    img = cv2.imread("image/noisy.jpg")
 
     kernel = np.ones((5, 5), np.float32) / 25
     dst = cv2.filter2D(img, -1, kernel)
@@ -28,6 +28,9 @@ def _2D_convolution():
     plt.subplot(122), plt.imshow(dst), plt.title('average')
     plt.xticks([]), plt.yticks([])
     plt.show()
+
+
+# _2D_convolution()
 
 
 def image_blurring():
@@ -53,7 +56,7 @@ def image_blurring():
     :return:
     """
     # 1. averaging
-    img = cv2.imread('noisy.jpg')
+    img = cv2.imread('image/noisy.jpg')
     blur = cv2.blur(img, (5, 5))
     # 2. Gaussian filter
     blur_gau = cv2.GaussianBlur(img, (5, 5), 0)
@@ -70,10 +73,9 @@ def image_blurring():
     plt.xticks([]), plt.yticks([])
     plt.subplot(234), plt.imshow(median), plt.title('median')
     plt.xticks([]), plt.yticks([])
-    plt.subplot(235), plt.imshow(median), plt.title('median')
+    plt.subplot(235), plt.imshow(median), plt.title('blur_bilateral')
     plt.xticks([]), plt.yticks([])
     plt.show()
 
 
-_2D_convolution()
 image_blurring()

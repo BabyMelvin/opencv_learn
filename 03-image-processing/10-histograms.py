@@ -17,21 +17,24 @@ def histogram_find_plot_analyze():
         1.image:uint8 or float32图片
         2.计算图片的通道索引
         3.mask:None是所有图片。
-        4.histSize:BIN数量，[256]
+        4.histSize:BIN数量，[256] . Bins取得采样点数目,平均分配[0,256]，然后依次连接各个点
         5.ranges：[0,256]
     :return:
     """
     # opencv
     img = cv2.imread('image/dog.png')
-    hist = cv2.calcHist([img], [0], None, [256], [0, 256])
+    # hist = cv2.calcHist([img], [0], None, [1000], [0, 256])
     # numpy
-    hist_np, bins = np.histogram(img.ravel(), 256, [0, 256])
-    #    plt.hist(img.ravel(), 256, [0, 256])
+    # hist_np, bins = np.histogram(img.ravel(), 256, [0, 256])
+    # plt.hist(img.ravel(), 256, [0, 256])
     color = ('b', 'g', 'r')
     for i, col in enumerate(color):
-        histr = cv2.calcHist([img], [i], None, [256], [0, 256])
+        histr = cv2.calcHist([img], [i], None, [1000], [0, 256])
         plt.plot(histr, color=col)
     plt.show()
+
+
+# histogram_find_plot_analyze()
 
 
 def histogram_mask():
@@ -40,10 +43,11 @@ def histogram_mask():
     :return:
     """
     img = cv2.imread('image/dog.png', 0)
-    # 建立一个mask
+    # 建立一个mask ,img.shape[:2] 第一维中的0,1索引。
     mask = np.zeros(img.shape[:2], np.uint8)
+    # 255 是白色
     mask[100:300, 100:400] = 255
-    masked_img = cv2.bitwise_and(img, img, mask=mask)
+    masked_img = cv2.bitwise_and(img, img, mask=mask)  # 取得图像的该区域
 
     hist_full = cv2.calcHist([img], [0], None, [256], [0, 256])
     hist_mask = cv2.calcHist([img], [0], mask, [256], [0, 256])
@@ -56,6 +60,9 @@ def histogram_mask():
     plt.show()
 
 
+# histogram_mask()
+
+
 def histogram_equalization():
     """
      图片均衡器概念，提高图片对比度
@@ -65,6 +72,7 @@ def histogram_equalization():
     img = cv2.imread('image/wiki.jpg', 0)
     hist, bins = np.histogram(img.flatten(), 256, [0, 256])
 
+    # 　累积和. [1,2,3] 累计和 [1,3,6]
     cdf = hist.cumsum()
     cdf_normalized = cdf * hist.max() / cdf.max()
 
@@ -76,6 +84,9 @@ def histogram_equalization():
     plt.show()
 
 
+# histogram_equalization()
+
+
 def after_equalization():
     """
 
@@ -85,39 +96,56 @@ def after_equalization():
     hist, bins = np.histogram(img.flatten(), 256, [0, 256])
 
     cdf = hist.cumsum()
+
+    # 去掉0值
     cdf_m = np.ma.masked_equal(cdf, 0)
     cdf_m = (cdf_m - cdf_m.min()) * 255 / (cdf_m.max() - cdf_m.min())
     cdf = np.ma.filled(cdf_m, 0).astype('uint8')
     img2 = cdf[img]
 
     plt.subplot(121), plt.imshow(img2, cmap='gray')
-    plt.subplot(122), plt.plot(cdf, color='b')
+    plt.subplot(122), plt.plot(cdf_m, color='b')
     plt.hist(img2.flatten(), 256, [0, 256], color='r')
     plt.xlim([0, 256])
     plt.legend(('cdf', 'histogram'), loc='upper left')
     plt.show()
 
 
-def equalization_opencv():
+# after_equalization()
+
+
+def equalization_in_opencv():
     img = cv2.imread('image/wiki.jpg', 0)
     equ = cv2.equalizeHist(img)
     res = np.hstack((img, equ))
-    cv2.imwrite('image/res.png', res)
-    img_ = cv2.imread('image/res.png', 0)
-    cv2.imshow('hello', img_)
+    # cv2.imwrite('image/res.png', res)
+    # img_ = cv2.imread('image/res.png', 0)
+    cv2.imshow('hello', res)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
+
+
+# equalization_in_opencv()
 
 
 def contrast_limited_adaptive_histogram_equalization():
     """
        局部均衡化
+            图片被小块，称为tiles。默认8x8.
+            对每小块进行处理，如果小块中有噪声，就会被放大。避免这个发生contrast limiting。
+            如果bin的数目超过40，
     :return:
     """
-    img = cv2.imread('image/wiki.jpg', 0)
+    img = cv2.imread('image/tsukuba_l.jpg', 0)
     clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
     cll = clahe.apply(img)
-    cv2.imwrite('image/test.png', cll)
+    cv2.imshow('orign', img)
+    cv2.imshow('cll', cll)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+
+# contrast_limited_adaptive_histogram_equalization()
 
 
 def histograms_2D():
@@ -144,6 +172,9 @@ def histograms_2D():
     # 用plt显示
     plt.imshow(hist, interpolation='nearest')
     plt.show()
+
+
+# histograms_2D()
 
 
 def histogram_back_projection():
@@ -183,9 +214,9 @@ def histogram_back_projection():
 
 
 def backprojection_in_opencv():
-    roi = cv2.imread('rose_red.png')
+    roi = cv2.imread('image/rose_red.png')
     hsv = cv2.cvtColor(roi, cv2.COLOR_BGR2HSV)
-    target = cv2.imread('rose.png')
+    target = cv2.imread('image/rose.png')
     hsvt = cv2.cvtColor(target, cv2.COLOR_BGR2HSV)
 
     # calculating object histogram
@@ -206,11 +237,8 @@ def backprojection_in_opencv():
 
     res = np.vstack((target, thresh, res))
     cv2.imwrite('res.jpg', res)
+    cv2.imshow('messi',ret)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
 
-
-histogram_find_plot_analyze()
-# histogram_mask()
-# histogram_equalization()
-# after_equalization()
-# equalization_opencv()
-# histograms_2D()
+backprojection_in_opencv()

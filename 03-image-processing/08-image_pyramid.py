@@ -35,6 +35,9 @@ def pyramid():
     cv2.destroyAllWindows()
 
 
+# pyramid()
+
+
 def image_blend_pyramid():
     """
     :return:
@@ -89,5 +92,4 @@ def image_blend_pyramid():
     # cv2.imwrite('image/direct_blend.jpg', real)
 
 
-# pyramid()
 image_blend_pyramid()

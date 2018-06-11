@@ -23,8 +23,8 @@ def image_gradients():
     """
     img = cv2.imread("image/dave.jpg", 0)
     laplacian = cv2.Laplacian(img, cv2.CV_64F)
-    sobelx = cv2.Sobel(img, cv2.CV_64F, 1, 0, ksize=5)
-    sobely = cv2.Sobel(img, cv2.CV_64F, 0, 1, ksize=5)
+    sobelX = cv2.Sobel(img, cv2.CV_64F, 1, 0, ksize=5)
+    sobelY = cv2.Sobel(img, cv2.CV_64F, 0, 1, ksize=5)
 
     plt.subplot(221), plt.imshow(img, cmap='gray')
     plt.title('original'), plt.xticks([]), plt.yticks([])
@@ -32,12 +32,15 @@ def image_gradients():
     plt.subplot(222), plt.imshow(laplacian, cmap='gray')
     plt.title('Laplacian'), plt.xticks([]), plt.yticks([])
 
-    plt.subplot(223), plt.imshow(sobelx, cmap='gray')
+    plt.subplot(223), plt.imshow(sobelX, cmap='gray')
     plt.title('SobelX'), plt.xticks([]), plt.yticks([])
 
-    plt.subplot(224), plt.imshow(sobely, cmap='gray')
+    plt.subplot(224), plt.imshow(sobelY, cmap='gray')
     plt.title('SobelY'), plt.xticks([]), plt.yticks([])
     plt.show()
+
+
+# image_gradients()
 
 
 def one_important_matter():
@@ -70,6 +73,4 @@ def one_important_matter():
     plt.title('sobel abs(cv_64f)'), plt.xticks([]), plt.yticks([])
     plt.show()
 
-
-# image_gradients()
-one_important_matter()
+# one_important_matter()
