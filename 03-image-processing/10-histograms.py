@@ -176,15 +176,15 @@ def histograms_2D():
 
 # histograms_2D()
 
-
-def histogram_back_projection():
+# 1.histogram_back_projection
+def algorithm_in_numpy():
     """
         背后投影
             用于图片一部分或者找图片感兴趣的部分
     :return:
     """
     # algorithm in numpy
-    # 1.要找的'M'和要搜索'I'
+    # 1.要计算颜色直方图主要两个,要找的'M'和要搜索'I' (I中搜索M)
     # roi is the object or region of object we need to find
     roi = cv2.imread('rose_red.png')
     hsv = cv2.cvtColor(roi, cv2.COLOR_BGR2HSV)
@@ -197,23 +197,29 @@ def histogram_back_projection():
     M = cv2.calcHist([hsv], [0, 1], None, [180, 256], [0, 180, 0, 256])
     I = cv2.calcHist([hsvt], [0, 1], None, [180, 256], [0, 180, 0, 256])
 
-    # 2.R=M/I.
+    # 2.找到比率R=M/I.然后投射R，例如用R作为调色板并创建一个有可能目标所有像素对应的新图片。
+    # 例如B（x,y)=R[h(x,y),s(x,y)]h和s是在像素点(x,y)色度和饱和度。
+    # 应用这个条件B(x,y)=min[B(x,y),1]
     R = M / I
     h, s, v = cv2.split(hsvt)
     B = R[h.ravel(), s.ravel()]
     B = np.minimum(B, 1)
     B = B.reshape(hsvt.shape[:2])
 
-    # B=D*B
+    # 3.现在用一个圆盘形卷积，B=D*B,D是圆形内核
     disc = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
     cv2.filter2D(B, -1, disc, B)
     B = np.uint8(B)
     cv2.normalize(B, B, 0, 255, cv2.NORM_MINMAX)
-
+    # 4.最大密度位置来获得对象的位置。如果想要图片中某个区域，适当阀值获得更好的效果。
     ret, thresh = cv2.threshold(B, 50, 255, 0)
 
 
+# 2.histogram_back_projection
 def backprojection_in_opencv():
+    """
+    :return:
+    """
     roi = cv2.imread('image/rose_red.png')
     hsv = cv2.cvtColor(roi, cv2.COLOR_BGR2HSV)
     target = cv2.imread('image/rose.png')
@@ -237,8 +243,9 @@ def backprojection_in_opencv():
 
     res = np.vstack((target, thresh, res))
     cv2.imwrite('res.jpg', res)
-    cv2.imshow('messi',ret)
+    cv2.imshow('messi', ret)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
+
 
 backprojection_in_opencv()
