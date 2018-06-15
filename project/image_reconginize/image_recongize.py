@@ -47,7 +47,7 @@ def identity_OCR(pic_path):
     print(w, h)
     ## 将身份证放大3倍
     out = img1.resize((w * 3, h * 3), Image.ANTIALIAS)
-    region = (125 * 3, 200 * 3, 370 * 3, 250 * 3)
+    region = (0 * 3, 0 * 3, 188 * 3, 42 * 3)
     # 裁切身份证号码图片
     cropImg = out.crop(region)
     # 转化为灰度图
@@ -63,7 +63,7 @@ def main_w():
     # CHANGE THIS IF TESSERACT IS NOT IN YOUR PATH, OR IS NAMED DIFFERENTLY
     # tesseract_cmd = 'tesseract'
     pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files (x86)\Tesseract-OCR\tesseract.exe'
-    pic_path = "C:\\Users\\dell\\PycharmProjects\\opencv\\project\\image_reconginize\\pic.jpg"
+    pic_path = "C:\\Users\\dell\\PycharmProjects\\opencv\\project\\image_reconginize\\image.jpg"
     identity_OCR(pic_path)
     time2 = time.time()
     print(u'总共耗时：' + str(time2 - time1) + 's')
