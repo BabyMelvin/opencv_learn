@@ -81,7 +81,8 @@ def capture_video_from_camera():
             continue
 
         # 显示生成框架
-        cv2.imshow('frame', gray)
+        # cv2.imshow('frame', gray)
+        cv2.imshow('frame', frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
     # 结束释放
@@ -89,7 +90,7 @@ def capture_video_from_camera():
     cv2.destroyAllWindows()
 
 
-# capture_video_from_camera()
+capture_video_from_camera()
 
 
 def playing_video_from_file():
@@ -159,5 +160,6 @@ def saving_video():
     cap.release()
     out.release()
     cv2.destroyAllWindows()
+
 
 saving_video()
