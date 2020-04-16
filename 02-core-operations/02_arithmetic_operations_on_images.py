@@ -73,17 +73,17 @@ def bitwise_operations():
     img2gray = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
 
     # 阀值: 10为值阀，<10 转化为0  , >10 255
-    # 255 为maxval 指定大于阀的值
+    # 255 为maxVal 指定大于阀的值
     ret, mask = cv2.threshold(img2gray, 10, 255, cv2.THRESH_BINARY)
 
     # bitwise_not 255减去原来像素：如原来20,去反为235
     mask_inv = cv2.bitwise_not(mask)
 
     # mask 相当于去除改部分，mask_inv 保留mask以外的部分
-    # now black-out the area of logo in ROI
+    # now black-out the area of logo in ROI(相当于去掉OpenCV 透明的地方,去掉背景色)
     img1_bg = cv2.bitwise_and(roi, roi, mask=mask_inv)
 
-    # take only region of logo from logo image
+    # take only region of logo from logo image(扣掉OpenCv)
     img2_fg = cv2.bitwise_and(img2, img2, mask=mask)
 
     # put logo in ROI and modify the main image

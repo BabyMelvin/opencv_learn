@@ -12,25 +12,27 @@ import matplotlib.pyplot as plt
 # 1.获取修改像素值
 img = cv2.imread('image/test.jpg')
 px = img[100, 100]
-print(px)
+print(px) # [227 174 123]
 
 # 获取一个蓝像素 BGR
 blue = img[100, 100, 0]
-print(blue)
+print(blue) # 227
 
 # 修改像素值
 img[100, 100] = [255, 255, 255]
-print(img[100, 100])
+print(img[100, 100]) # [255 255 255]
 
 # 获得RED值
 red = img.item(10, 10, 2)
-print(red)
+print(red) # 72
+
 # 修改RED值
-img.itemset((10, 10, 2), 100)
-img.item(10, 10, 2)
+print("RED值")
+print(img.itemset((10, 10, 2), 100)) # None
+print(img.item(10, 10, 2)) # 100
 
 # 获得图片属性 400x300x3
-print(img.shape)
+print(img.shape) # (768, 1024, 3)
 
 # 获取所有的像素点数 360000 占的字节数
 print(img.size)

@@ -92,8 +92,8 @@ def matplotlib_show_image():
     img = cv2.imread('image/test.jpg')
     plt.title("MyPicture")
     plt.imshow(img, cmap='gray', interpolation='bicubic')
-    plt.xticks([]), plt.yticks([])  # hide tick values on x and y axis
-    # plt.legend(loc='right', shadow=True) # label not found
+    #plt.xticks([]), plt.yticks([])  # hide tick values on x and y axis
+    #plt.legend(loc='right', shadow=True) # label not found
     plt.show()
 
 

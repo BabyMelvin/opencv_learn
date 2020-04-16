@@ -22,21 +22,29 @@ def simple_threshold():
     :return:
     """
     img = cv2.imread('image/test.jpg')
-    ori = img[:3, :3, :]
-    # 大于127 为255.小于127为0  二值就是分界意思
-    ret, thresh1 = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY)
-    ret, thresh2 = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY_INV)
+    ori = img[:3, 0, 0] # [80 80 80]
+    print(ori)
+
+
+    # 大于27 为255.小于27为0  二值就是分界意思
+    ret, thresh1 = cv2.threshold(img, 27, 255, cv2.THRESH_BINARY)
+    print(thresh1[:3, 0, 0]) # [255 255 255]
+
+    # 大于27为0，小于27为255
+    ret, thresh2 = cv2.threshold(img, 27, 255, cv2.THRESH_BINARY_INV)
+    print(thresh2[:3, 0, 0]) # [0 0 0]
 
     # 大于37截取成37.小于37不变 。截取挤压
     ret, thresh3 = cv2.threshold(img, 37, 255, cv2.THRESH_TRUNC)
+    print(thresh3[:3, 0, 0]) # [37 37 37]
 
-    # 阀为0或不是0,和截取区别在于阀值范围为0或者是指定值
+    # 大于48，则保持不变,小于48则为0 和截取区别在于阀值范围为0或者是指定值
     ret, thresh4 = cv2.threshold(img, 48, 255, cv2.THRESH_TOZERO)
+    print(thresh4[:3, 0, 0]) # [80 80 80]
 
-    ret, thresh5 = cv2.threshold(img, 127, 255, cv2.THRESH_TOZERO_INV)
-    print("ori", ori)
-    print("th3=trunc", thresh3[:3, :3, :])
-    print("th4=tozero", thresh4[:3, :3, :])
+    # 大于59则为0，否则保持不变
+    ret, thresh5 = cv2.threshold(img, 59, 255, cv2.THRESH_TOZERO_INV)
+    print(thresh5[:3, 0, 0]) # [0 0 0]
 
     titles = ['origin', 'binary', 'binary_inv', 'trunc', 'tozero', 'tozero_inv']
     images = [img, thresh1, thresh2, thresh3, thresh4, thresh5]
@@ -66,7 +74,7 @@ def adaptive_threshold():
     img = cv2.imread('image/test.jpg', 0)
 
     # ksize 必须是odd（奇数）
-    # 在图像处理中，在进行如边缘检测这样的进一步处理之前，通常需要首先进行一定程度的降噪
+    # 在图像处理中，在进行如边缘检测这样的进一步处理之前，通常需要首先进行一定程度的降噪,中值过滤
     img = cv2.medianBlur(img, 5)
 
     ret, th1 = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY)

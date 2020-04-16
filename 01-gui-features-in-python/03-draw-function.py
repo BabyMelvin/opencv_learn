@@ -53,7 +53,7 @@ def draw_circle():
     # 创建一个黑图
     img = np.zeros((512, 512, 3), np.uint8)
     # 画一个圆,-1表示实心
-    img = cv2.circle(img, (477, 63), 63, (0, 0, 255), -1)
+    img = cv2.circle(img, (377, 63), 63, (0, 0, 255), -1)
     cv2.imshow('image', img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
@@ -98,10 +98,10 @@ def paint_text():
     img = np.zeros((512, 512, 3), np.uint8)
     # 写个字
     font = cv2.FONT_HERSHEY_SIMPLEX
-    cv2.putText(img, 'OpenCV', (10, 500), font, 4, (255, 255, 255), 2, cv2.LINE_AA)
+    cv2.putText(img, 'OpenCV', (10, 100), font, 4, (255, 255, 255), 2, cv2.LINE_AA)
     cv2.imshow('image', img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
 
-paint_text()
+# paint_text()
