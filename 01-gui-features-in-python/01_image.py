@@ -1,5 +1,4 @@
 import cv2
-import numpy as np
 from matplotlib import pyplot as plt
 
 """
@@ -21,13 +20,32 @@ from matplotlib import pyplot as plt
         5.仅取绿色：Gray=G
 """
 
+"""
+图像属性：
+OpenCV通过Numpy数组表示图像数据，每个图像都是多维数组。每个元素对应一个像素。
+图像的尺寸和颜色模式也可以通过数组的形状来表示。
+
+图像的基本属性：
+- 图像的尺寸（Width, Height）：可以通过 img.shape 获取。
+- 颜色通道（Channels）：通常为 RGB（三个通道），也可以是灰度图（单通道）。
+- 数据类型（Data type）：常见的有 uint8（0-255 范围），也可以是 float32 或其他。
+"""
 
 def show_image1():
     # 加载一个图片
+    img_1 = cv2.imread('image/test.jpg', -1)
+    img_0 = cv2.imread('image/test.jpg', 0)
     img = cv2.imread('image/test.jpg', 1)
-    print(img.shape)  # {(400,300,3) -> -1,(400,300)->0,(400,300,3)->1}
-    # 路径不会抛出错误，但print img ->None
-    # print(img)
+    print(img_1.shape) # (400, 300, 3)
+    print(img_0.shape) # (400, 300)
+    print(img.shape)   # (400, 300, 3)
+
+    if img is None:
+        print("无法加载图像")
+        exit()
+
+    # 路径不对抛出错误，但print img ->None
+
     print(img[:3, :3, :])
     img_part100 = img[:100, :100, :]
     img_part_gray_100 = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)[:100, :100]
@@ -41,7 +59,7 @@ def show_image1():
     cv2.destroyAllWindows()
 
 
-# show_image1()
+show_image1()
 
 
 def show_image2():
@@ -73,7 +91,7 @@ def show_image3():
     cv2.imshow('image3', img)
     k = cv2.waitKey(0) & 0xFF  # 64位系统0
     # print('k=', k, "ord('s')", ord('s'))
-    if k == 27:  # 等待ESC
+    if k == 27 or k == ord('q'):  # 等待ESC
         cv2.destroyAllWindows()
     elif k == ord('s'):  # 's' key保存和退出 ,键盘
         cv2.imwrite('testgray2.png', img)
