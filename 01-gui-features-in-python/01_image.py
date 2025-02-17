@@ -39,6 +39,9 @@ def show_image1():
     print(img_1.shape) # (400, 300, 3)
     print(img_0.shape) # (400, 300)
     print(img.shape)   # (400, 300, 3)
+    print(img_1.shape[0], img_1.shape[::-1])
+
+    print(type(img_1.shape))
 
     if img is None:
         print("无法加载图像")
