@@ -1,0 +1,26 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "cppbuild",
+			"label": "C/C++: g++.exe 生成活动文件",
+			"command": "C:/Users/e0006493/Documents/tools/mingw64/bin/g++.exe",
+			"args": [
+				"-fdiagnostics-color=always",
+				"-g",
+				"${workspaceFolder}\\helloworld.cpp",
+				"${workspaceFolder}\\add.cpp",
+				"-o",
+				"${workspaceFolder}\\${fileBasenameNoExtension}.exe"
+			],
+			"options": {
+				"cwd": "C:/Users/e0006493/Documents/tools/mingw64/bin"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build",
+			"detail": "编译器: C:/Users/e0006493/Documents/tools/mingw64/bin/g++.exe"
+		}
+	]
+}
