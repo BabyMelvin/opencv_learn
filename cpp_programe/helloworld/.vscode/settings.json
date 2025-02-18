@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "*.x": "linkerscript",
+        "*.defconfig": "kconfig",
+        "*.common": "makefile",
+        "array": "cpp",
+        "tuple": "cpp",
+        "iostream": "cpp",
+        "ostream": "cpp",
+        "sstream": "cpp"
+    }
+}
