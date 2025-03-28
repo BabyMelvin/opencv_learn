@@ -5,11 +5,20 @@
 using namespace cv;
 using namespace std;
 
+/**
+ * @brief Main function of the program.
+ *
+ * This function serves as the entry point of the program. It demonstrates basic
+ * output operations, calls an external function to perform addition, reads an image
+ * using OpenCV, displays the image in a window, and waits for a key press before closing the window.
+ *
+ * @return Returns 0 on successful execution, -1 if the image cannot be opened or found.
+ */
 int main()
 {
     cout << "Hello world" << endl;
     cout << "2 + 3 =" << Add(2, 3) << endl;
-
+    cout << "Compiled with OpenCV " << CV_VERSION << endl;
     // Read image
     Mat img = imread("D:\\python_programe\\opencv_learn\\cpp_programe\\helloworld\\astra_color.jpg", IMREAD_COLOR);
     if (img.empty())
